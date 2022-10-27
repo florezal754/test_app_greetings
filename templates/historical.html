@@ -1,0 +1,76 @@
+<html> 
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+  <head>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    </head>
+  <body>
+    <p>Input data to submit, example: 2022-06-01 22:00:00+00:00</p>
+    <br>
+    <input class="inputPanel" type="text" id="start_date" name="start_date"  data-linked="true" value="DD/MM/YYYY"/>
+    <input class="inputPanel" type="text" id="end_date" name="end_date"  data-linked="true" value="DD/MM/YYYY"/>
+    <br>
+    <button type='button' id='submit'>Submit</button>
+    <button type='button' id='submit1'>Submit chart</button>
+
+    <div id="messagedisplay">hola</div>
+    <div id='chart' class='chart js-plotly-plot'>hola
+        {{ ploting_plotly | safe }}
+    </div>
+
+  </body>
+  <script>
+    // Script json 
+    $(document).ready(function() {
+      $('#submit').click(function(){
+        console.log('clicked submit')
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+        $.ajax({
+         url: "/historical",
+         type: "get",
+         data: {start_date: start_date, end_date:end_date},
+         success: function(response) {
+            $('#messagedisplay').text(response)
+        },
+         error: function(xhr) {
+           //Do Something to handle error
+       }
+     });
+     });
+    });
+</script>
+
+    
+    <script type='text/javascript'>
+// script chart 
+
+    $(document).ready(function() {
+        $('#submit1').click(function(){
+          console.log('clicked submit chart')
+          var start_date = $('#start_date').val();
+          var end_date = $('#end_date').val();
+          var graphs = {{ ploting_plotly | safe }}
+          //Plotly.plot('chart', graphs, {})
+          $.ajax({
+           url: "/historicalchart1",
+           type: "get",
+           data: {start_date: start_date, end_date:end_date},
+           success: function(ploting_plotly) {
+
+            $('#chart').text(ploting_plotly,ploting_plotly=ploting_plotly)
+            //response = graphs
+            //$('#chart').text(response)
+            //$('#chart').Ploty.plot(response, {})
+            Plotly.plot('chart', graphs, {})
+          },
+           error: function(xhr) {
+             //Do Something to handle error
+         }
+       });
+       });
+      });
+  </script>
+</html>
