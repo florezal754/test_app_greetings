@@ -7,13 +7,12 @@ Jinja2==2.11.2
 MarkupSafe==2.0.1
 Werkzeug==1.0.1
 wincertstore==0.2
-pandas==1.4.2
+pandas
 json
 plotly
 plotly.express
 plotly.io
 plotly.subplots
 numpy
-plotly.graph_objects
-json 
+plotly.graph_objects 
 flask_cors
