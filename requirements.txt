@@ -12,3 +12,8 @@ json
 plotly
 plotly.express
 plotly.io
+plotly.subplots
+numpy
+plotly.graph_objects
+json 
+flask_cors
