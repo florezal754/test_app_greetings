@@ -10,7 +10,5 @@ wincertstore==0.2
 pandas
 plotly
 plotly.express
-plotly.subplots
 numpy
-plotly.graph_objects 
 flask_cors
