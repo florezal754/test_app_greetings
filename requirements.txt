@@ -12,3 +12,4 @@ plotly
 plotly.express
 numpy
 flask_cors
+requests
