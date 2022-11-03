@@ -367,10 +367,10 @@ def average_carbon_emissions(df):
                                            axis=1).sum(axis=1)
 
     co2_df['AEF'] = co2_df['Total Emisions']/co2_df['Peninsular demand']
-    df['AEF'] = co2_df['AEF']
-    df['Total Emisions'] = co2_df['Total Emisions']
+    #df['AEF'] = co2_df['AEF']
+    #df['Total Emisions'] = co2_df['Total Emisions']
     
-    return df 
+    return co2_df 
 
 def average_primary_energy(df):
     PEF = {'pef_nuclear': 3.030, 'pef_coal': 2.790, 'pef_combined gas cycle': 1.970, 'pef_cogeneration': 1.860, 
@@ -436,11 +436,11 @@ def average_primary_energy(df):
 
     PE_df['APEF'] = PE_df['Total PE USE']/PE_df['Peninsular demand']
     
-    df['APEF'] = PE_df['APEF']
-    df['Total PE USE'] = PE_df['Total PE USE']   
+    #df['APEF'] = PE_df['APEF']
+    #df['Total PE USE'] = PE_df['Total PE USE']   
     
     
-    return df 
+    return PE_df 
 
 def marginal_signals(df):
     marginal = df[['Total generation', 'Peninsular demand']]
@@ -482,10 +482,6 @@ def marginal_signals(df):
 
 ### ROUTES 
 
-@app.route('/api')
-def home():
-    return render_template('newindex.html')
-
 @app.route('/', methods=['POST','GET'])
 def api():
     #main
@@ -499,30 +495,27 @@ def api():
     co2_df = average_carbon_emissions(analysis_df)
     pe_df = average_primary_energy(co2_df)
     marginal_df = marginal_signals(pe_df)
-    #print(pe_df.head())
-    #response = analysis_df.to_json(orient ='index')
-    #return response
-
-    #result = analysis_df.filter(['Renewables','NonRenewables',
-    #                             'Import France','Import Portugal','Import Morocco',
-    #                             'Pump Consumption','Balearic Link',
-    #                             'Morocco Exchange','Portugal Exchange','France Exchange',
-    #                             ])
-    
-    #result = sorted_df.drop(['Demanda Peninsular','Generación PBF total'], axis=1)
-    #.filter(['MEFmodel', 'MPEFmodel'])
-    
-    #result = marginal_df.filter(['AEF','APEF','MEFmodel','MPEFmodel'])
-    #result = analysis_df.filter(['Total','Renewables'])
     
     result = marginal_df
-    #result = build_df.filter(['Renewables','NonRenewables'])
-     
-    #chart_from_python=my_plot_full_bar(result)
-    #chart_from_python=my_plot_full(result)
-    chart_from_python=dropdown_menu_line(result)
+    result_co2 = co2_df.filter(['CO2_nuclear', 'CO2_coal', 'CO2_combinedgas',
+       'CO2_cogeneration', 'CO2_fuel', 'CO2_wind', 'CO2_photovoltaic',
+       'CO2_solarthermal', 'CO2_biomass', 'CO2_biogas', 'CO2_waste',
+       'CO2_hydroUGH', 'CO2_pumpedhydro', 'CO2_france', 'CO2_portugal'])
     
-    return render_template('newindex.html',chart_for_html=chart_from_python)
+    result_pe = pe_df.filter(['PE_nuclear', 'PE_coal', 'PE_combinedgas',
+       'PE_cogeneration', 'PE_fuel', 'PE_wind', 'PE_photovoltaic',
+       'PE_solarthermal', 'PE_biomass', 'PE_biogas', 'PE_waste', 'PE_hydroUGH',
+       'PE_pumpedhydro', 'PE_france'])
+
+    chart_from_python=dropdown_menu_line(result)
+    chart_from_python_co2=my_plot_full_bar(result_co2)
+    chart_from_python_pe=my_plot_full_bar(result_pe)
+    
+    return render_template('GUI.html',
+                           chart_for_html=chart_from_python,
+                           chart_for_html_co2=chart_from_python_co2,
+                           chart_for_html_pe=chart_from_python_pe
+                           )
 
 @app.route('/dashboard',methods=['POST','GET'])
 def dashboard():
@@ -537,6 +530,6 @@ def dashboard():
     result = analysis_df
     chart_from_python=pie_subplots(result)
 
-    return render_template('newindex.html',chart_for_html=chart_from_python)
+    return render_template('Dashboard.html',chart_for_html=chart_from_python)
 
 #app.run()
