@@ -483,7 +483,7 @@ def marginal_signals(df):
     return marginal_df 
 
 ### ROUTES 
-@app.route('/')
+@app.route('/', methods=['POST','GET'])
 def home():
     #main
     df = pd.DataFrame(columns=["PBF_shortname","PBF_value", "PBF_datetime"])
@@ -521,7 +521,7 @@ def home():
     
     return render_template('newindex.html',chart_for_html=chart_from_python)
 
-@app.route('/dashboard')
+@app.route('/dashboard',methods=['POST','GET'])
 def dashboard():
     df = pd.DataFrame(columns=["PBF_shortname","PBF_value", "PBF_datetime"])
     values_df = get_values(df)
