@@ -488,8 +488,8 @@ def marginal_signals(df):
 def home():
     return render_tamplate('home.html')
 
-@app.route('/app', methods=['POST','GET'])
-def app():
+@app.route('/api', methods=['POST','GET'])
+def api():
     #main
     df = pd.DataFrame(columns=["PBF_shortname","PBF_value", "PBF_datetime"])
     values_df = get_values(df)
