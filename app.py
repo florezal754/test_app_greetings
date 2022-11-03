@@ -19,23 +19,21 @@ def greeter():
 	flash("Hi " + str(request.form['name_input']) + ", great to see you!")
 	return render_template("index.html")
 
-Dataset = pd.read_csv('penalty_signals.csv', encoding="UTF-8")
-Signals = pd.read_csv('signals16_21.csv', encoding="UTF-8")
+#Dataset = pd.read_csv('penalty_signals.csv', encoding="UTF-8")
+#Signals = pd.read_csv('signals16_21.csv', encoding="UTF-8")
 
-@app.route("/data", methods=['POST', 'GET'])
-def post_data():
-    Data_jsonStr = Signals.to_json()
-    pythonObj = json.loads(Data_jsonStr)
-    #response = pythonObj
-    fig = px.line(Signals, x='datetime', y='APEF')
-    ploting_plotly = pio.show(fig)
-    return ploting_plotly
+#@app.route("/data", methods=['POST', 'GET'])
+#def post_data():
+#    Data_jsonStr = Signals.to_json()
+#    pythonObj = json.loads(Data_jsonStr)
+#    #response = pythonObj
+#    fig = px.line(Signals, x='datetime', y='APEF')
+#    ploting_plotly = pio.show(fig)
+#    return ploting_plotly
 
-@app.route("/signals")
-def signals():
-    return render_template('historical.html')
+#@app.route("/signals")
+#def signals():
+#    return render_template('historical.html')
+ 
 
-
-    
-
-app.run()
+#app.run()
