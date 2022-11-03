@@ -1,25 +1,23 @@
 #flask dependencies 
 from flask import Flask, jsonify, render_template, request as req
-from flask_cors import CORS
+#from flask_cors import CORS
 import json 
 import pandas as pd
 #import methodology
 import plotly
 import plotly.graph_objects as go
 import plotly.express as px
-from flask_cors import CORS
 from plotly.subplots import make_subplots 
 
 #methodology dependencies
 import requests 
-import pandas as pd
 import numpy 
 import warnings
 warnings.filterwarnings('ignore')
 
 
 app = Flask(__name__)
-CORS(app)
+#CORS(app)
 
 
 
