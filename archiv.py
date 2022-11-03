@@ -484,7 +484,7 @@ def marginal_signals(df):
 
 @app.route('/')
 def home():
-    return render_tamplate('home.html')
+    return "Hola"
 
 @app.route('/api', methods=['POST','GET'])
 def api():
