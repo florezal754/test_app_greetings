@@ -10,7 +10,6 @@ wincertstore==0.2
 pandas
 plotly
 plotly.express
-plotly.io
 plotly.subplots
 numpy
 plotly.graph_objects 
