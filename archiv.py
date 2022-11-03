@@ -539,4 +539,4 @@ def dashboard():
 
     return render_template('newindex.html',chart_for_html=chart_from_python)
 
-app.run()
+#app.run()
