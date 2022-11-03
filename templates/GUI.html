@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <title>Marginal signals</title>
+    <!-- Add the Plotly Script Scource in html head tag-->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js" ></script>
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">-->
+    <!--<link rel="stylesheet" href="/static/css/nav.css">-->
+    <style>
+        /*Dashboard style*/
+        * {box-sizing: border-box;}
+        .content {font-family: Arial;padding: 20px;}
+        #navsection {margin-bottom: 200px;}
+        /* Create two unequal columns that floats next to each other */
+        /* Left column */
+        .leftcolumn {float: left;width: 75%;}
+        /* Right column */
+        .rightcolumn {float: left;width: 25%;padding-left: 20px;}
+        /* Clear floats after the columns */
+        .row:after {content: "";display: table;clear: both;} 
+        /* Footer */
+        .footer {padding: 20px;text-align: center;background: #ddd;margin-top: 20px;}
+        /* Add a card effect for articles */
+        .card {background-color: white;padding: 20px;margin-top: 20px;}
+
+
+        /* Create a sticky/fixed navbar */
+        #navbar {
+            overflow: hidden;
+            background-color: #f1f1f1;
+            padding: 70px 10px; /* Large padding which will shrink on scroll (using JS) */
+            transition: 0.4s; /* Adds a transition effect when the padding is decreased */
+            position: fixed; /* Sticky/fixed navbar */
+            width: 100%;
+            top: 0; /* At the top */
+            z-index: 99;
+        }
+        
+        /* Style the navbar links */
+        #navbar a {
+            float: left;
+            color: black;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            line-height: 25px;
+            border-radius: 4px;
+        }
+        
+        /* Style the logo */
+        #navbar #logo {font-size: 35px;font-weight: bold;transition: 0.4s;}
+        
+        /* Links on mouse-over */
+        #navbar a:hover {background-color: #ddd;color: black;}
+        
+        /* Style the active/current link */
+        #navbar a.active {background-color: rgb(106,176,35);color: white;}
+        
+        /* Display some links to the right */
+        #navbar-right {float: right;}
+
+        /* Centered section inside the top navigation */
+        .topnav-centered a {
+        float: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Nav -->
+    <section id="navsection">
+        <div id="navbar">
+            <a href="#default" id="logo">Energy Flexibility</a>
+            <!-- Centered link -->
+            <div class="topnav-centered">
+                <a href="#home" class="active">Modulation signals</a>
+            </div>            
+            <div id="navbar-right">
+              <a href="http://127.0.0.1:5000/dashboard">Dashboard</a>
+              <a href="#about">Historical</a>
+            </div>
+          </div>
+    </section>
+    <section class="content">
+    <!-- Content split in columns -->
+    <div class="leftcolumn">
+        <div class="card" style="background-color:#f0f8ff;height:150px;border:none;">
+        </div>
+        <div class="card" id="chart1" style="height:600px;border:none;">
+        </div>
+        <div class="card" id="chart_co2" style="height:600px;background-color:#f0f8ff;display:flex;flex-wrap: wrap;width: 100%;">
+            chart_for_html_co2
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        </div>
+        <div class="card" id="chart_pe" style="height:600px;">
+            chart_for_html_pe
+        </div>
+    </div>
+    <div class="rightcolumn">
+        <div class="card" style="background-color:#f4f4f4;border:none;font-size:20px;">    
+          <p>
+            Modulation signals that help in reducing the EU’s 
+            primary energy use and CO2 emissions associated to electricity
+        </p>     
+        </div>
+        <div class="card">
+            <h2>XXX</h2>
+            <p>XXXXX <a href="https://www.irec.cat/research/projects/commit20/">xxxx</a> 
+                XXXX
+          </p>    
+      
+          </div>
+    </div>
+</div>
+
+
+    <!--<div class="footer">
+        <h2>Copyright © 2022 Institut de Recerca en Energia de Catalunya. All Rights Reserved.
+      </h2>
+    </div>-->
+
+    
+</section>
+
+    <!--
+        IREC CORPORATE IDENTITY 
+        pantone 307C rgb(0,118,173)
+        100% negre rgb(0,0,0)
+        pantone 376C rgb (106,176,35)
+        pantone 158C rgb(245,102,0)
+        80% negre rgb(0,0,0)
+    -->
+
+    <script >
+        // When the user scrolls down 80px from the top of the document, resize the navbar's padding and the logo's font size
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+        if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+            document.getElementById("navbar").style.padding = "30px 10px";
+            document.getElementById("logo").style.fontSize = "25px";
+            document.getElementById("navbar").style.background = "lightblue";
+        } else {
+            document.getElementById("navbar").style.padding = "80px 10px";
+            document.getElementById("logo").style.fontSize = "35px";
+            document.getElementById("navbar").style.background = "#f1f1f1";
+        }
+        }
+    </script>
+    <script type="text/javascript">
+        var graphs;
+        var graphs = {{ chart_for_html | safe }}; 
+        var graphs=JSON.parse(graphs);
+        // console.log()
+        var config ={displayModeBar: true,showTips: false,responsive:true};
+        Plotly.plot('chart1',graphs.data,graphs.layout,config);
+
+
+        var graphs_co2;
+        var graphs_co2 = {{ chart_for_html_co2 | safe }}; 
+        var graphs_co2=JSON.parse(graphs_co2);
+        // console.log()
+        var config_co2 ={displayModeBar: true,showTips: false,responsive:true};
+        Plotly.plot('chart_co2',graphs_co2.data,graphs_co2.layout,config_co2);
+
+
+        var graphs_pe;
+        var graphs_pe = {{ chart_for_html_pe | safe }}; 
+        var graphs_pe=JSON.parse(graphs_pe);
+        // console.log()
+        var config_pe ={displayModeBar: true,showTips: true,responsive:true,displaylogo: false,autosize:true};
+        Plotly.plot('chart_pe',graphs_pe.data,graphs_pe.layout,config_pe,{scrollZoom: true});
+
+
+    </script>
+</body>
+</html>
