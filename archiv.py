@@ -618,17 +618,15 @@ def api():
     datetime_df = set_datetime_index(values_df)
     sorted_df = pivot_sort_and_fill(datetime_df)
     rename_df = rename_en(sorted_df)
-    build_df = build_df(rename_df)
-    analysis_df = renewables(build_df)
+    all_df = build_df(rename_df)
+    analysis_df = renewables(all_df)
     co2_df = average_carbon_emissions(analysis_df)
     pe_df = average_primary_energy(co2_df)
     marginal_df = marginal_signals(pe_df)
 
-    result = marginal_df
-
     result_sources = build_df.drop(['Renewables','NonRenewables','Total','RES-E-RATIO','Total generation','Peninsular demand','Interconnections exchange'], axis=1)
      
-    chart_from_python=two_y_axis_dropdown(result)
+    chart_from_python=two_y_axis_dropdown(marginal_df)
     chart_from_python_res=pie_subplots(analysis_df)
     char_from_python_sources=my_plot_full_bar(result_sources)
     
