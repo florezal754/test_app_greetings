@@ -638,7 +638,7 @@ def api():
     download_df = marginal_df.filter(['datetime','AEF','APEF','MEFmodel','MPEFmodel'])
 
     json_object = download_df.to_json()
-    with open("static\day-ahead.json", "w") as outfile:
+    with open("static/css\day-ahead.json", "w") as outfile:
         outfile.write(json_object) 
 
     return render_template('GUI.html',
