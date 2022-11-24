@@ -21,14 +21,82 @@ app = Flask(__name__)
 
 
 
-### GRAPHS 
+####### GRAPHS ########
+def my_plot(dataframe,plot_var):
+    data_plot = go.Scatter(x=dataframe.index,y=dataframe.plot_var, line=dict(color="#CE285E",width=2))
+    layout=go.Layout(title=dict(text="Tomorrow signals",x=0.5), 
+                     xaxis_title="Hour", yaxis_title="Signals")
+    fig =go.Figure(data=data_plot, layout=layout)
+
+    #"This is a Line Chart of Variable"+" "+str(plot_var)
+    
+    # This is conversion step...
+    fig_json = fig.to_json()
+    graphJSON = json.dumps(fig_json, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
+
+
 def my_plot_full_bar(dataframe):
     data_plot = px.bar(dataframe,x=dataframe.index,y=dataframe.columns, 
-                       labels={'PBF_datetime':'Hour', 'value':'MWh', 'PBF_shortname':'Sources'},
-                       title='SCHEDULED GENERATION')
+                       labels={'PBF_datetime':'Hour', 
+                               'value':'MWh', 
+                               'PBF_shortname':'Sources'},
+                       title="<b>Day-ahead scheduled generation</b><br><i>Breakdown shows the energy scheduled by production type for the Spanish peninsular electrical system</i>")
     fig_json = data_plot.to_json()
     graphJSON = json.dumps(fig_json, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
+
+def my_plot_full_bar_CO2(dataframe):
+    data_plot = px.bar(dataframe,x=dataframe.index,y=dataframe.columns, 
+                       labels={'PBF_datetime':'Hour', 
+                               'value':'kgCO2', 
+                               'PBF_shortname':'Sources (Click to hide)'},
+                       title="<b>Day-ahead CO2 Emissions [kgCO2 eq.]<br>per technology for day-ahead scheduled generation</b>")
+    data_plot.update_layout(legend=dict(
+    orientation="h",
+    yanchor="bottom",
+    y=-1.02,
+    xanchor="center",
+    x=0.5,
+    entrywidth=20,
+    font=dict(
+            family="Arial",
+            size=10,
+            color="black"
+        ),
+    title=None,
+
+))
+    fig_json = data_plot.to_json()
+    graphJSON = json.dumps(fig_json, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
+
+
+def my_plot_full_bar_PE(dataframe):
+    data_plot = px.bar(dataframe,x=dataframe.index,y=dataframe.columns, 
+                       labels={'PBF_datetime':'Hour', 
+                               'value':'kWh_pe', 
+                               'PBF_shortname':'Sources (Click to hide)'},
+                       title="<b>Day-ahead Primary energy use [kWh_pe eq.] <br>per technology for day-ahead scheduled generation </b>")
+    data_plot.update_layout(legend=dict(
+    orientation="h",
+    yanchor="bottom",
+    y=-1.02,
+    xanchor="center",
+    x=0.5,
+    entrywidth=20,
+    font=dict(
+            family="Arial",
+            size=10,
+            color="black"
+        ),
+    title=None,
+
+))
+    fig_json = data_plot.to_json()
+    graphJSON = json.dumps(fig_json, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
+
 
 def F(dataframe):
     data_plot = px.line(dataframe,x=dataframe.index,y=dataframe.columns, 
@@ -75,7 +143,7 @@ def pie_subplots(dataframe):
     fig.update_traces(hole=.6, hoverinfo="label+percent+name")
 
     fig.update_layout(
-            title_text="Mapped technologies",
+            title_text="<b>Day-ahead generation by renewable sources</b><br><i>Click to hide source</i>",
             #add annotations in the center of the donnut
             annotations=[dict(text='', x=0.18, y=0.5, font_size=20, showarrow=False),
                         dict(text='', x=0.80, y=0.5, font_size=20, showarrow=False)])
@@ -93,7 +161,7 @@ def dropdown_menu_line(dataframe):
 
     
     plot = go.Figure(data=[
-                        go.Scatter(name='Average Emissions Factor (AEF) [kgCO2/kWh]',x=x,y=y1),
+                        go.Scatter(name='Average Emissions Factor\n (AEF) [kgCO2/kWh]',x=x,y=y1),
                         go.Scatter(name='Average Primary Energy Factor (APEF) [kWpe/kWh]',x=x,y=y2),
                         go.Scatter(name='Marginal Emissions Factor (MEF) [kgCO2/kWh]',x=x,y=y3),
                         go.Scatter(name='Marginal Primary Energy Factor (MPEF) [kWpe/kWh]',x=x,y=y4)])
@@ -107,26 +175,26 @@ def dropdown_menu_line(dataframe):
                     dict(label="Choose",
                         method="update",
                         args=[{"visible": [True, True, True, True]},
-                            {"title": "Modulation signals (Double click to hide)"}]),
+                            {"title": "Modulation signals (Click to hide)"}]),
                     dict(label="AEF",
                         method="update",
                         args=[{"visible": [True, False, False, False]},
-                            {"title": "Average Emissions Factor",
+                            {"title": "Average Emissions Factor [kgCO2/kWh]",
                                 }]),
                     dict(label="APEF",
                         method="update",
                         args=[{"visible": [False, True, False, False]},
-                            {"title": "Average Primary Energy Factor",
+                            {"title": "Average Primary Energy Factor [kWpe/kWh]",
                                 }]),
                     dict(label="MEF",
                         method="update",
                         args=[{"visible": [False, False, True, False]},
-                            {"title": "Marginal Emissions Factor",
+                            {"title": "Marginal Emissions Factor [kWpe/kWh]",
                                 }]),
                     dict(label="MPEF",
                         method="update",
                         args=[{"visible": [False, False,False,True]},
-                            {"title": "Marginal Primary Energy Factor",
+                            {"title": "Marginal Primary Energy Factor [kWpe/kWh]",
                                 }]),
                     dict(label="Emissions",
                         method="update",
@@ -146,8 +214,68 @@ def dropdown_menu_line(dataframe):
     graphJSON = json.dumps(fig_json, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
 
+def two_y_axis_dropdown(df):
+    # Create figure with secondary y-axis
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    #plot set theme
+    pio.templates.default = "plotly_white"
 
-### FUNCTIONS
+
+    # Add traces
+    fig.add_trace(go.Scatter(x=df.index, y=df.AEF, name="AEF",mode='lines',line_color="blue"),secondary_y=False,)
+    fig.add_trace(go.Scatter(x=df.index, y=df.APEF, name="APEF",line_color="black"),secondary_y=True)
+    fig.add_trace(go.Scatter(x=df.index, y=df.MEFmodel, name="MEF model",mode='lines+markers', line_color="blue"),secondary_y=False,)
+    fig.add_trace(go.Scatter(x=df.index, y=df.MPEFmodel, name="MPEF model",mode='lines+markers',line_color="black"),secondary_y=True)
+
+
+    # Add dropdown
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                type="buttons",
+                direction="right",
+                x=0.6,
+                y=1,
+                active=0,
+                buttons=list([
+                    dict(label="All",
+                        method="update",
+                        args=[{"visible": [True, True, True, True]},
+                            {"title": "<b>Day-ahead Modulation Signals</b> <br><i>Signals as inputs to activate energy flexiblity in buildings equipped with electric loads</i>",
+                                }]),
+                    dict(label="Emissions",
+                        method="update",
+                        args=[{"visible": [True, False, True, False]},
+                            {"title": "Average vs. Marginal",
+                                }]),
+                    dict(label="Primary Energy",
+                        method="update",
+                        args=[{"visible": [False, True, False, True]},
+                            {"title": "Average vs. Marginal",
+                                }]),
+                ]),
+            )
+        ], 
+        legend=dict(orientation="h", y=-0.2, yanchor="bottom", xanchor="center",x=0.5))
+
+    # Add figure title
+    fig.update_layout(
+        title_text="<b>Day-ahead Modulation Signals</b> <br><i>Signals as inputs to activate energy flexiblity in buildings equipped with electric loads</i>",
+        #legend_title="Signals <br>(Click to hide)"
+    )
+
+    # Set x-axis title
+    fig.update_xaxes(title_text=None)
+
+    # Set y-axes titles
+    fig.update_yaxes(title_text="<b>kgCO2/kWh</b>", color="blue",secondary_y=False)
+    fig.update_yaxes(title_text="<b>kWpe/kWh</b>", color="black", secondary_y=True)
+
+    fig_json = fig.to_json()
+    graphJSON = json.dumps(fig_json, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
+
+####### FUNCTIONS ########
 def get_values(df):
     #make API call
     TOKEN = open('Token.txt', 'r').read()
@@ -480,7 +608,7 @@ def marginal_signals(df):
     
     return marginal_df 
 
-### ROUTES 
+####### ROUTES ########
 
 @app.route('/', methods=['POST','GET'])
 def api():
@@ -490,31 +618,31 @@ def api():
     datetime_df = set_datetime_index(values_df)
     sorted_df = pivot_sort_and_fill(datetime_df)
     rename_df = rename_en(sorted_df)
-    all_df = build_df(rename_df)
-    analysis_df = renewables(all_df)
+    build_df = build_df(rename_df)
+    analysis_df = renewables(build_df)
     co2_df = average_carbon_emissions(analysis_df)
     pe_df = average_primary_energy(co2_df)
     marginal_df = marginal_signals(pe_df)
-    
-    result = marginal_df
-    result_co2 = co2_df.filter(['CO2_nuclear', 'CO2_coal', 'CO2_combinedgas',
-       'CO2_cogeneration', 'CO2_fuel', 'CO2_wind', 'CO2_photovoltaic',
-       'CO2_solarthermal', 'CO2_biomass', 'CO2_biogas', 'CO2_waste',
-       'CO2_hydroUGH', 'CO2_pumpedhydro', 'CO2_france', 'CO2_portugal'])
-    
-    result_pe = pe_df.filter(['PE_nuclear', 'PE_coal', 'PE_combinedgas',
-       'PE_cogeneration', 'PE_fuel', 'PE_wind', 'PE_photovoltaic',
-       'PE_solarthermal', 'PE_biomass', 'PE_biogas', 'PE_waste', 'PE_hydroUGH',
-       'PE_pumpedhydro', 'PE_france'])
 
-    chart_from_python=dropdown_menu_line(result)
-    chart_from_python_co2=my_plot_full_bar(result_co2)
-    chart_from_python_pe=my_plot_full_bar(result_pe)
+    result = marginal_df
+
+    result_sources = build_df.drop(['Renewables','NonRenewables','Total','RES-E-RATIO','Total generation','Peninsular demand','Interconnections exchange'], axis=1)
+     
+    chart_from_python=two_y_axis_dropdown(result)
+    chart_from_python_res=pie_subplots(analysis_df)
+    char_from_python_sources=my_plot_full_bar(result_sources)
     
+    download_df = marginal_df.filter(['datetime','AEF','APEF','MEFmodel','MPEFmodel'])
+
+    json_object = download_df.to_json()
+    with open("static\day-ahead.json", "w") as outfile:
+        outfile.write(json_object) 
+
     return render_template('GUI.html',
                            chart_for_html=chart_from_python,
-                           chart_for_html_co2=chart_from_python_co2,
-                           chart_for_html_pe=chart_from_python_pe
+                           chart_for_html_res=chart_from_python_res,
+                           chart_for_html_sources=char_from_python_sources,
+                           json_object_html=json_object
                            )
 
 @app.route('/dashboard',methods=['POST','GET'])
@@ -529,7 +657,27 @@ def dashboard():
     
     result = analysis_df
     chart_from_python=pie_subplots(result)
+    
+    co2_df = average_carbon_emissions(analysis_df)
+    pe_df = average_primary_energy(co2_df)
+    marginal_df = marginal_signals(pe_df)
+    
+    result_co2 = co2_df.filter(['CO2_nuclear', 'CO2_coal', 'CO2_combinedgas',
+       'CO2_cogeneration', 'CO2_fuel', 'CO2_wind', 'CO2_photovoltaic',
+       'CO2_solarthermal', 'CO2_biomass', 'CO2_biogas', 'CO2_waste',
+       'CO2_hydroUGH', 'CO2_pumpedhydro', 'CO2_france', 'CO2_portugal'])
+    
+    result_pe = pe_df.filter(['PE_nuclear', 'PE_coal', 'PE_combinedgas',
+       'PE_cogeneration', 'PE_fuel', 'PE_wind', 'PE_photovoltaic',
+       'PE_solarthermal', 'PE_biomass', 'PE_biogas', 'PE_waste', 'PE_hydroUGH',
+       'PE_pumpedhydro', 'PE_france'])
+    
+    chart_from_python_co2=my_plot_full_bar_CO2(result_co2)
+    chart_from_python_pe=my_plot_full_bar_PE(result_pe)
 
-    return render_template('Dashboard.html',chart_for_html=chart_from_python)
-
+    return render_template('Dashboard.html',
+                           chart_for_html=chart_from_python,
+                            chart_for_html_co2=chart_from_python_co2,
+                           chart_for_html_pe=chart_from_python_pe
+                           )
 #app.run()
