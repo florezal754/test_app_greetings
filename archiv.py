@@ -8,6 +8,7 @@ import plotly
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots 
+import plotly.io as pio
 
 #methodology dependencies
 import requests 
