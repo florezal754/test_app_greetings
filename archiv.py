@@ -625,7 +625,7 @@ def api():
     marginal_df = marginal_signals(pe_df)
 
     result_signals = marginal_df
-    result_sources = build_df.filter(['Balearic link','Nuclear','Pumped hydro','Combined Gas Cycle','Photovoltaic','Solar thermal','Ocean/Geothermal',
+    result_sources = all_df.filter(['Balearic link','Nuclear','Pumped hydro','Combined Gas Cycle','Photovoltaic','Solar thermal','Ocean/Geothermal',
                                             'Fuel','Biomass', 'Biogas','Hydro', 'Wind','Natural Gas Cogeneration', 'Waste RSU',
                                             'Coal','Import France','Import Portugal','Pump Consumption','Morocco Exchange','Portugal Exchange','France Exchange']) 
         
