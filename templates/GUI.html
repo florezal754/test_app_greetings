@@ -16,26 +16,27 @@
     <style>
         /*Dashboard style*/
         * {box-sizing: border-box;}
-        .content {font-family: Arial;padding: 20px;}
+        .content {font-family: Arial;padding: 40px;}
+        .content_signals {font-family: Arial;margin-top:60px;margin-left:30px;margin-right:30px;align-content:center;}
+
         #navsection {margin-bottom: 200px;}
         /* Create two unequal columns that floats next to each other */
         /* Left column */
-        .leftcolumn {float: left;width: 75%;}
+        .leftcolumn {float: left;width: 50%;}
         /* Right column */
-        .rightcolumn {float: left;width: 25%;padding-left: 20px;}
+        .rightcolumn {float: left;width: 50%;padding-left: 20px;}
         /* Clear floats after the columns */
         .row:after {content: "";display: table;clear: both;} 
         /* Footer */
-        .footer {padding: 20px;text-align: center;background: #ddd;margin-top: 20px;}
+        .footer {font-size: 15px;text-align: center;position: fixed;padding:10px;margin:0;bottom: 0;width: 100%;height: 40px;color:rgb(245,102,0);background: white;}
         /* Add a card effect for articles */
         .card {background-color: white;padding: 20px;margin-top: 20px;}
-
 
         /* Create a sticky/fixed navbar */
         #navbar {
             overflow: hidden;
             background-color: #f1f1f1;
-            padding: 70px 10px; /* Large padding which will shrink on scroll (using JS) */
+            padding: 60px 10px; /* Large padding which will shrink on scroll (using JS) */
             transition: 0.4s; /* Adds a transition effect when the padding is decreased */
             position: fixed; /* Sticky/fixed navbar */
             width: 100%;
@@ -57,84 +58,72 @@
         
         /* Style the logo */
         #navbar #logo {font-size: 35px;font-weight: bold;transition: 0.4s;}
-        
         /* Links on mouse-over */
         #navbar a:hover {background-color: #ddd;color: black;}
-        
         /* Style the active/current link */
         #navbar a.active {background-color: rgb(106,176,35);color: white;}
-        
         /* Display some links to the right */
         #navbar-right {float: right;}
-
         /* Centered section inside the top navigation */
-        .topnav-centered a {
-        float: none;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        }
+        .topnav-centered a {float: none;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
     </style>
 </head>
 <body>
     <!-- Nav -->
     <section id="navsection">
         <div id="navbar">
-            <a href="#default" id="logo">Energy Flexibility</a>
+            <a href="http://127.0.0.1:5000/" id="logo">Energy Flexibility</a>
             <!-- Centered link -->
             <div class="topnav-centered">
-                <a href="#home" class="active">Modulation signals</a>
+                <a href="http://127.0.0.1:5000/" class="active">Modulation signals</a>
             </div>            
             <div id="navbar-right">
-              <a href="https://marginal-signals.herokuapp.com/dashboard">Dashboard</a>
-              <a href="#about">Historical</a>
+              <a href="http://127.0.0.1:5000/dashboard">Dashboard</a>
+              <a href="http://127.0.0.1:5000/historical">Historical</a>
             </div>
           </div>
     </section>
-    <section class="content">
-    <!-- Content split in columns -->
-    <div class="leftcolumn">
-        <div class="card" style="background-color:#f0f8ff;height:150px;border:none;">
+    <!-- Main content -->
+    <section class="content_signals">
+        <div class="xx" id="xx" style="height:30px;border:none;background:white;border-style: bottom;width:100%;text-align: right;margin-bottom:10px;">
+            <button style="background-color:grey;border:none;"><a href="static\day-ahead.json" download="output.json" style="background-color: grey;color: white;">Export JSON</a></button>
+            <small>Note: Timestamp indexed.</small>
         </div>
-        <div class="card" id="chart1" style="height:600px;border:none;">
+        <div class="xx" id="chart1" style="height:500px;border:none;width:95%;align-content:center;">
         </div>
-        <div class="card" id="chart_co2" style="height:600px;background-color:#f0f8ff;display:flex;flex-wrap: wrap;width: 100%;">
-            chart_for_html_co2
-            display: flex;
-            flex-wrap: wrap;
-            width: 100%;
+        <div class="xx" id="xx" style="height:50px;border:none;background:white;border-style: bottom;width:100%;text-align: left;margin-top:30px;margin-bottom:10px;">
+            <small>The scheduled generation has been retrieved from //www.esios.ree.es/es </small>
         </div>
-        <div class="card" id="chart_pe" style="height:600px;">
-            chart_for_html_pe
+        <!--<div class="xx" id="xx" style="height:400px;border:none;background:RGBA(0, 0, 0, 0.2);width:100%;">
+        </div>-->
+        <div class="xx" id="xx" style="height:500px;width:100%;border:none;background:RGBA(0, 0, 0, 0);margin-top:20px;margin-bottom:15px;display:flex;justify-content:center;align-items:center;">
+            <div style="height:500px;width:80%;border:solid;padding:20px;background:white;">
+                <div id="chart_sources" style="width:100%;"></div>
+
+            </div>
         </div>
+    </section>
+
+<footer>
+    <div class="xx" id="xx" style="height:170px;border:none;background:rgb(245,102,0,0.1);border-style: bottom;width:100%;text-align: center;margin-bottom:15px;margin-top:50px;padding:20px;">
+        <small><b>Acknowledgments</b> <br>The research conducted is performed in the framework of the project “2020PANDE00116 - 
+            <a href="https://www.irec.cat/research/projects/commit20/">ComMit-20</a> 
+            Designing Resilient Communities to Mitigate Pandemic and Climate Change effects”. <br>Funded by the AGAUR (Agència de Gestió d’Ajust Universitaris i de Recerca).
+        </small>
+        <br>
+        <small><b>Contact</b>
+            <a class="email" href="mailto:florezal754@gmail.com">Email us</a>  | 
+            <b>Visit us at</b> <a href="https://www.irec.cat">irec.cat</a>  |  
+            1 IREC – Catalonia Energy Research Institute 
+            Jardins de les Dones de Negre 1, 2ª pl. 
+            08930 Sant Adrià del Besòs (Barcelona, Spain)
+        </small>
     </div>
-    <div class="rightcolumn">
-        <div class="card" style="background-color:#f4f4f4;border:none;font-size:20px;">    
-          <p>
-            Modulation signals that help in reducing the EU’s 
-            primary energy use and CO2 emissions associated to electricity
-        </p>     
-        </div>
-        <div class="card">
-            <h2>XXX</h2>
-            <p>XXXXX <a href="https://www.irec.cat/research/projects/commit20/">xxxx</a> 
-                XXXX
-          </p>    
-      
-          </div>
+    <div class="footer">
+        <p>Copyright © 2022 Institut de Recerca en 
+            Energia de Catalunya. All Rights Reserved.</p>
     </div>
-</div>
-
-
-    <!--<div class="footer">
-        <h2>Copyright © 2022 Institut de Recerca en Energia de Catalunya. All Rights Reserved.
-      </h2>
-    </div>-->
-
-    
-</section>
-
+</footer>
     <!--
         IREC CORPORATE IDENTITY 
         pantone 307C rgb(0,118,173)
@@ -154,7 +143,7 @@
             document.getElementById("logo").style.fontSize = "25px";
             document.getElementById("navbar").style.background = "lightblue";
         } else {
-            document.getElementById("navbar").style.padding = "80px 10px";
+            document.getElementById("navbar").style.padding = "60px 10px";
             document.getElementById("logo").style.fontSize = "35px";
             document.getElementById("navbar").style.background = "#f1f1f1";
         }
@@ -164,27 +153,60 @@
         var graphs;
         var graphs = {{ chart_for_html | safe }}; 
         var graphs=JSON.parse(graphs);
-        // console.log()
-        var config ={displayModeBar: true,showTips: false,responsive:true};
+        console.log(graphs);
+        var config ={displayModeBar: true,showTips: false,responsive:true, 
+            displaylogo: false, 
+            modeBarButtonsToRemove: ['zoom2d','zoomIn2d','zoomOut2d','resetViews','pan2d',
+            'sendDataToCloud','editInChartStudio','select2d','lasso2d','autoScale2d',
+            'resetScale2d','toggleHover','toggleSpikelines','hoverCompareCartesian','hoverClosestCartesian']};
         Plotly.plot('chart1',graphs.data,graphs.layout,config);
 
 
-        var graphs_co2;
-        var graphs_co2 = {{ chart_for_html_co2 | safe }}; 
-        var graphs_co2=JSON.parse(graphs_co2);
+        var graphs_sources;
+        var graphs_sources = {{ chart_for_html_sources | safe }}; 
+        var graphs_sources=JSON.parse(graphs_sources);
         // console.log()
-        var config_co2 ={displayModeBar: true,showTips: false,responsive:true};
-        Plotly.plot('chart_co2',graphs_co2.data,graphs_co2.layout,config_co2);
+        var config_sources ={displayModeBar: true,showTips: false,responsive:true, 
+            displaylogo: false, 
+            modeBarButtonsToRemove: ['zoom2d','zoomIn2d','zoomOut2d','resetViews','pan2d',
+            'sendDataToCloud','editInChartStudio','select2d','lasso2d','autoScale2d',
+            'resetScale2d','toggleHover','toggleSpikelines','hoverCompareCartesian','hoverClosestCartesian']};  
+        Plotly.plot('chart_sources',graphs_sources.data,graphs_sources.layout,config_sources,{scrollZoom: true});
 
 
-        var graphs_pe;
-        var graphs_pe = {{ chart_for_html_pe | safe }}; 
-        var graphs_pe=JSON.parse(graphs_pe);
+        var graphs_res;
+        var graphs_res = {{ chart_for_html_res | safe }}; 
+        var graphs_res=JSON.parse(graphs_res);
         // console.log()
-        var config_pe ={displayModeBar: true,showTips: true,responsive:true,displaylogo: false,autosize:true};
-        Plotly.plot('chart_pe',graphs_pe.data,graphs_pe.layout,config_pe,{scrollZoom: true});
-
-
+        var config_res ={displayModeBar: true,showTips: true,responsive:true,displaylogo: false,autosize:true};
+        Plotly.plot('chart_res',graphs_res.data,graphs_res.layout,config_res);
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            $('#download').click(function()
+            {
+                console.log('clicked');
+                var data;
+                var data = {{ json_object_html | safe }};
+                var data = JSON.parse(data);
+                console.log(data);
+                $.ajax(
+                    method:"GET",
+                    url:"/",
+                    dataType: "text",
+                    data: {text: data},
+                    success: function(result)
+                    {
+                        var resultado = JSON.parse(result);
+                        $('#result').html(resultado);
+                        console.log(resultado);
+                    }
+                )
+            })
+                }
+        );
     </script>
 </body>
+</html>
 </html>
