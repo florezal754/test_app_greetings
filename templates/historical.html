@@ -81,7 +81,7 @@
                 <a href="https://marginal-signals.herokuapp.com/">Modulation signals</a>
             </div>            
             <div id="navbar-right">
-              <a href="https://marginal-signals.herokuapp.com/dashboard">Dashboard</a>
+              <a href="https://marginal-signals.herokuapp.com/">Dashboard</a>
               <a href="https://marginal-signals.herokuapp.com/historical" class="active">Historical</a>
             </div>
           </div>
@@ -98,15 +98,17 @@
                     <br><br>
                     <input class="inputPanel" type="text" id="start_date" name="start_date"  data-linked="true" value="2020-06-01 22:00:00+00:00" />
                     <input class="inputPanel" type="text" id="end_date" name="end_date"  data-linked="true" value="2020-06-01 23:00:00+00:00"/>
-                    <br><br>
-                    <!--<button style="background-color:grey;border:none;"><a href="static\historical.json" download="historical.json" style="background-color: grey;color: white;">Export JSON</a></button>-->
-                    <small>Note: Timestamp indexed.</small>
                     <button type='button' id='submitJSONstring' value="Submit JSON string">
                         <p>Submit</p>
                       </button>
+                      <br><br>
+                    <button style="background-color:grey;border:none;"><a href="static\historical.json" download="historical.json" style="background-color: grey;color: white;">Export JSON</a></button>
+                    <!--<button style="background-color:grey;border:none;"><a href="historical.csv" download="historical.csv" style="background-color: grey;color: white;">Export CSV</a></button>-->
+
                     <div class="xx" id="JSONstringdisplay" style="height:auto;margin-top:60px;">
                          
                     </div>
+
                 </div>
                 <div class="leftcolumn" style="height:200px;width:15%;border:none;background-color:white;">
                     <div id="xx">
@@ -129,8 +131,8 @@
             </div>
     </div>
     </section>
-    
-    <footer>
+
+<footer>
 
     <div class="footer">
         <p>Copyright © 2022 Institut de Recerca en 
@@ -154,34 +156,41 @@
     }
     }
 </script>
-    
-  
- <script>
-    // Script json 
-    $(document).ready(function() {
-      $('#submitJSONstring').click(function(){
-        console.log('clicked submitJSONstring')
-        var start_date = $('#start_date').val();
-        var end_date = $('#end_date').val();
-        $.ajax({
-         //url: "/historical",
-         url: "/checkhistorical",
-         type: "get",
-         data: {start_date: start_date, end_date:end_date},
-         success: function(response) {
-            //$('#JSONstringdisplay').text(response);
-            //var resultado = JSON.parse(response);
-            $('#JSONstringdisplay').html(response);
 
-        },
-         error: function(xhr) {
-           //Do Something to handle error
-       }
-     });
-     });
-    });
-</script>
+    <script>
+        // Script json 
+        $(document).ready(function() {
+          $('#submitJSONstring').click(function(){
+            console.log('clicked submitJSONstring')
+            var start_date = $('#start_date').val();
+            var end_date = $('#end_date').val();
+            $.ajax({
+             //url: "/historical",
+             url: "/checkhistorical",
+             type: "get",
+             data: {start_date: start_date, end_date:end_date},
+             success: function(response) {
+                //$('#JSONstringdisplay').text(response);
+                //var resultado = JSON.parse(response);
+                $('#JSONstringdisplay').html(response);
     
+            },
+             error: function(xhr) {
+               //Do Something to handle error
+           }
+         });
+         });
+        });
+    </script>
+
+        <!--
+        IREC CORPORATE IDENTITY 
+        pantone 307C rgb(0,118,173)
+        100% negre rgb(0,0,0)
+        pantone 376C rgb (106,176,35)
+        pantone 158C rgb(245,102,0)
+        80% negre rgb(0,0,0)
+    -->
 </body>
 </html>
     
