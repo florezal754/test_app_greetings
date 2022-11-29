@@ -683,4 +683,36 @@ def dashboard():
                             chart_for_html_co2=chart_from_python_co2,
                            chart_for_html_pe=chart_from_python_pe
                            )
+
+Dataset = pd.read_csv('signals16_21.csv', encoding="UTF-8")
+
+@app.route('/historical')
+#methods=['GET','POST']
+def historical():
+    
+    return render_template('historicalGUI.html')
+  
+@app.route('/checkhistorical')
+def checkhistorical():
+    start_date = req.args.get('start_date')
+    #start_date = input('Introduce date: ')
+    end_date = req.args.get('end_date')
+    #end_date = input('Introduce date: ')
+    start_date = str(start_date)
+    end_date = str(end_date)
+    if start_date and end_date in Dataset.datetime.values:
+        print("The date is in list")
+        mask = (Dataset.datetime >= start_date) & (Dataset.datetime <= end_date)
+        filtered_df = Dataset.loc[mask]
+        response = filtered_df
+        response = filtered_df.to_json()
+        print(response)
+        #print(filtered_df.head())
+        #response = filtered_df.to_html(classes="table table-striped")
+    else:
+        response = ['Requested datetime series is not available.']
+        print('olala')
+    #return flask.jsonify({'status':True(start_date, end_date)})
+    #return jsonify(response)
+    return response 
 #app.run()
