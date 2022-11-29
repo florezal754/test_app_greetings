@@ -707,6 +707,13 @@ def checkhistorical():
         response = filtered_df
         response = filtered_df.to_json()
         print(response)
+        csv = filtered_df.to_csv('historical.csv')
+
+        json_object = filtered_df.to_json()
+
+        with open("static\historical.json", "w") as outfile:
+            outfile.write(json_object) 
+            
         #print(filtered_df.head())
         #response = filtered_df.to_html(classes="table table-striped")
     else:
@@ -714,5 +721,5 @@ def checkhistorical():
         print('olala')
     #return flask.jsonify({'status':True(start_date, end_date)})
     #return jsonify(response)
-    return response 
+    return response
 #app.run()
