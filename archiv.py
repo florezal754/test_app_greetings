@@ -690,7 +690,7 @@ Dataset = pd.read_csv('signals16_21.csv', encoding="UTF-8")
 #methods=['GET','POST']
 def historical():
     
-    return render_template('historicalGUI.html')
+    return render_template('historical.html')
   
 @app.route('/checkhistorical')
 def checkhistorical():
