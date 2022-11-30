@@ -711,7 +711,7 @@ def checkhistorical():
 
         json_object = filtered_df.to_json()
 
-        with open("static\historical.json", "w") as outfile:
+        with open("static/css\historical.json", "w") as outfile:
             outfile.write(json_object) 
             
         #print(filtered_df.head())
